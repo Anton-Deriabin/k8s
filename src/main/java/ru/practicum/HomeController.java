@@ -20,7 +20,7 @@ public class HomeController {
             e.printStackTrace();
         }
 
-        String message = "<h1>VERSION 1: Hello from the " + hostname + "</h1>";
+        String message = "<h1>VERSION 2: Hello from the " + hostname + "</h1>";
         System.out.println(message);
 
         return message;
