@@ -1,5 +1,7 @@
 package ru.practicum;
 
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -38,6 +40,30 @@ public class HomeController {
         } catch (Exception e) {
             e.printStackTrace();
             return "Ошибка при обращении к nginx: " + e.getMessage();
+        }
+    }
+
+    @GetMapping(value = "/jsonplaceholder", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> callJsonPlaceholder() {
+        try {
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(new URI("https://jsonplaceholder.typicode.com/todos"))
+                    .header("Accept", "application/json")
+                    .GET()
+                    .build();
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            return ResponseEntity
+                    .ok()
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(response.body());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity
+                    .internalServerError()
+                    .body("{\"error\": \"" + e.getMessage().replace("\"", "'") + "\"}");
         }
     }
 }
