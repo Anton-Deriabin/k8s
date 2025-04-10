@@ -1,0 +1,23 @@
+{{- if .Values.nginx.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+spec:
+  replicas: {{ .Values.nginx.replicaCount }}
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - name: nginx
+          image: {{ .Values.nginx.image }}
+          resources:
+            {{- toYaml .Values.nginx.resources | nindent 12 }}
+          ports:
+            - containerPort: 80
+  {{- end }}

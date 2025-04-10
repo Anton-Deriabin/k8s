@@ -1,0 +1,29 @@
+replicaCount: 2
+
+nameOverride: "k8s-web-to-nginx"
+
+image:
+  repository: toh309/k8s-web-to-nginx-ru
+  tag: "1.3.0"
+  pullPolicy: IfNotPresent
+
+service:
+  type: LoadBalancer
+  port: 3333
+  targetPort: 3000
+
+resources:
+  limits:
+    memory: "128Mi"
+    cpu: "150m"
+
+containerPort: 3000
+
+nginx:
+  enabled: true
+  replicaCount: 2
+  image: nginx
+  resources:
+    limits:
+      memory: "64Mi"
+      cpu: "50m"
